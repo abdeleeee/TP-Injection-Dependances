@@ -4,6 +4,6 @@ public class DaoImpl implements IDao {
 
     @Override
     public double getData() {
-        return 100;
+        return 10;
     }
 }
