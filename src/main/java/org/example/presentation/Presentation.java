@@ -1,17 +1,21 @@
 package org.example.presentation;
 
-import org.example.dao.DaoImpl;
 import org.example.dao.IDao;
 import org.example.metier.IMetier;
-import org.example.metier.MetierImpl;
 
 public class Presentation {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        IDao dao = new DaoImpl();
+        // Instanciation dynamique de DaoImpl
+        Class<?> cDao = Class.forName("org.example.dao.DaoImpl");
+        IDao dao = (IDao) cDao.getDeclaredConstructor().newInstance();
 
-        IMetier metier = new MetierImpl(dao);
+        // Instanciation dynamique de MetierImpl
+        Class<?> cMetier = Class.forName("org.example.metier.MetierImpl");
+        IMetier metier = (IMetier) cMetier
+                .getDeclaredConstructor(IDao.class)
+                .newInstance(dao);
 
         System.out.println("Résultat = " + metier.calcul());
     }
