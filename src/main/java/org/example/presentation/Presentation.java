@@ -1,21 +1,17 @@
 package org.example.presentation;
 
-import org.example.dao.IDao;
 import org.example.metier.IMetier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Presentation {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        // Instanciation dynamique de DaoImpl
-        Class<?> cDao = Class.forName("org.example.dao.DaoImpl");
-        IDao dao = (IDao) cDao.getDeclaredConstructor().newInstance();
+        ApplicationContext context =
+                new ClassPathXmlApplicationContext("applicationContext.xml");
 
-        // Instanciation dynamique de MetierImpl
-        Class<?> cMetier = Class.forName("org.example.metier.MetierImpl");
-        IMetier metier = (IMetier) cMetier
-                .getDeclaredConstructor(IDao.class)
-                .newInstance(dao);
+        IMetier metier = context.getBean("metier", IMetier.class);
 
         System.out.println("Résultat = " + metier.calcul());
     }
